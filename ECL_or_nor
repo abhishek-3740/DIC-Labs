@@ -1,0 +1,41 @@
+* ECL OR/NOR Gate
+
+.title ECL_OR_NOR
+
+.model Tx NPN (BF=100)
+
+* Power Supplies
+VCC VCC 0 0
+VEE VEE 0 -5.2
+VBB VB  0 -1.3
+
+* Inputs
+VA A 0 PULSE(-1.7 -0.8 0ns 1ns 1ns 10ns 20ns)
+VBIN B 0 PULSE(-1.7 -0.8 10ns 1ns 1ns 10ns 20ns)
+
+* Resistors
+RC1 VCC C1 300
+RC2 VCC C2 300
+RE  E   VEE 1k
+
+* Differential pair (inputs + reference)
+Q1 C1 A  E Tx
+Q2 C1 B  E Tx
+Q3 C2 VB E Tx
+
+* Emitter follower outputs
+Q4 Y1 C1 VEE Tx
+Q5 Y2 C2 VEE Tx
+
+* Load resistors
+R1 Y1 VEE 15k
+R2 Y2 VEE 15k
+
+.tran 0.1ns 40ns
+
+.control
+run
+plot V(A)+2 V(B)+4 V(Y1)+6 V(Y2)+8
+.endc
+
+.end
