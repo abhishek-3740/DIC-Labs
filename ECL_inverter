@@ -1,0 +1,31 @@
+* ECL Inverter
+
+.title ECL_Inverter
+
+.model Tx NPN (BF=100)
+
+* Power Supplies
+VCC VCC 0 0
+VEE VEE 0 -5.2
+VBB VB  0 -1.3
+
+* Input (clean pulse)
+VIN B1 0 PULSE(-1.7 -0.8 0ns 1ns 1ns 5ns 10ns)
+
+* Resistors
+RC1 VCC C1 300
+RC2 VCC C2 300
+RE  E   VEE 1k
+
+* Transistors
+Q1 C1 B1 E Tx
+Q2 C2 VB E Tx
+
+.tran 0.1ns 40ns
+
+.control
+run
+plot V(C1)+4 V(C2)+2 V(B1)
+.endc
+
+.end
